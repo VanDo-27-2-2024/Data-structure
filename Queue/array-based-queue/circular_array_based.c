@@ -52,7 +52,6 @@ int is_queue_empty(const queue_t* queue)
     return 0; // queue is NOT empty
 }
 
-
 int enqueue(queue_t* queue, void* data, data_type type)
 {
     if (((queue->rear + queue->size + 1) % queue->size) == queue->front)
@@ -132,12 +131,7 @@ data_t* dequeue(queue_t* queue)
 
 void destroy_queue(queue_t* queue)
 {
-    for (int i = 0; i < queue->size; i++)
-    {
-        free(queue->queue_array[i]);
-        queue->queue_array[i] = NULL;
-    }
-
+    free(queue->queue_array);
     free(queue);
 }
 
@@ -154,6 +148,8 @@ int main()
     enqueue(q, &a, CHAR);
     enqueue(q, &f, FLOAT);
     enqueue(q, &test[4], INT);
+    enqueue(q, &test[2], INT);
+    enqueue(q, &test[3], INT);
 
     while (!is_queue_empty(q))
     {
@@ -180,6 +176,7 @@ int main()
         }
 
         free(dat->data);
+        free(dat);
     }
 
     destroy_queue(q);
